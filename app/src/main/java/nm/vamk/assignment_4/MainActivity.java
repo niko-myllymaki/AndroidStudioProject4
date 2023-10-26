@@ -14,24 +14,39 @@ import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    Button displayButton;
+    Button clearButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button displayButton = (Button) findViewById(R.id.button_display);
-        displayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setTextViewValue(getCurrenDateTime());
-            }
-        });
+        displayButton = findViewById(R.id.button_display);
+        displayButton.setOnClickListener(ButtonClickListener);
 
+        clearButton = findViewById(R.id.button_clear);
+        clearButton.setOnClickListener(ButtonClickListener);
 
     }
 
-    public void clearTextView(View view) {
+    private View.OnClickListener ButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button clickedButton = (Button) v;
+
+            if(clickedButton.equals(displayButton)) {
+                setTextViewValue(getCurrentDateTime());
+            }
+
+            if(clickedButton.equals(clearButton)) {
+                clearTextView();
+            }
+
+        }
+    };
+
+    public void clearTextView() {
         TextView textViewDateTime = findViewById(R.id.tw_date_time);
         textViewDateTime.setText("");
     }
@@ -41,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         textViewDateTime.setText(value);
     }
 
-    public String getCurrenDateTime() {
+    public String getCurrentDateTime() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
